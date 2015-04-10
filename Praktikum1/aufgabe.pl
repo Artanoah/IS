@@ -45,7 +45,7 @@ mann(williamWales).
 mann(henryWales).
 
 frau(elizabethBowsLyon).
-frau(eliztabethII).
+frau(elizabethII).
 frau(margaretRose).
 frau(dianaSpencer).
 frau(anneRoyal).
@@ -65,20 +65,20 @@ vater(andrewDuke, phillipDuke).
 vater(edwardWessex, phillipDuke).
 vater(davidLinley, antonyArmstrongJones).
 vater(sarah, antonyArmstrongJones).
-vater(eliztabethII, georgeWindsowVI).
+vater(elizabethII, georgeWindsowVI).
 vater(margaretRose, georgeWindsowVI).
 
 mutter(williamWales, dianaSpencer).
 mutter(henryWales, dianaSpencer).
 mutter(beatriceYork, sarahFergurson).
 mutter(eugineYork, sarahFergurson).
-mutter(charlesWales, eliztabethII).
-mutter(anneRoyal, eliztabethII).
-mutter(andrewDuke, eliztabethII).
-mutter(edwardWessex, eliztabethII).
+mutter(charlesWales, elizabethII).
+mutter(anneRoyal, elizabethII).
+mutter(andrewDuke, elizabethII).
+mutter(edwardWessex, elizabethII).
 mutter(davidLinley, margaretRose).
 mutter(sarah, margaretRose).
-mutter(eliztabethII, elizabethBowsLyon).
+mutter(elizabethII, elizabethBowsLyon).
 mutter(margaretRose, elizabethBowsLyon).
 
 person(Person) :- mann(Person).
@@ -125,3 +125,41 @@ grossonkel(Neffe, Grossonkel) :- person(Neffe), mann(Grossonkel), person(Elternt
 
 grosstante(Neffe, Grosstante) :- person(Neffe), frau(Grosstante), person(Elternteil),
                                  elternteil(Neffe, Elternteil), tante(Elternteil, Grosstante).
+
+:- begin_tests(stammbaum).
+
+test(person) :- person(williamWales),
+				person(sarahFergurson).
+
+test(elternteil) :- elternteil(anneRoyal, phillipDuke),
+					elternteil(davidLinley, margaretRose).
+
+test(opa) :- opa(williamWales, phillipDuke),
+			 opa(sarah, georgeWindsowVI).
+
+test(oma) :- oma(beatriceYork, elizabethII),
+			 oma(andrewDuke, elizabethBowsLyon).
+
+test(vorfahre) :- vorfahre(henryWales, georgeWindsowVI),
+				  vorfahre(henryWales, elizabethBowsLyon),
+				  vorfahre(henryWales, phillipDuke),
+				  vorfahre(henryWales, elizabethII),
+				  vorfahre(henryWales, dianaSpencer),
+				  vorfahre(henryWales, charlesWales).
+
+test(schwester) :- schwester(eugineYork, beatriceYork),
+				   schwester(andrewDuke, anneRoyal).
+
+test(bruder) :- bruder(sarah, davidLinley),
+				bruder(charlesWales, andrewDuke).
+
+test(onkel) :- onkel(eugineYork, edwardWessex),
+			   onkel(henryWales, andrewDuke).
+
+test(tante) :- tante(andrewDuke, margaretRose),
+			   tante(sarah, elizabethII).
+
+test(grosstante) :- grosstante(beatriceYork, margaretRose),
+					grosstante(henryWales, margaretRose).
+
+:- end_tests(stammbaum).
