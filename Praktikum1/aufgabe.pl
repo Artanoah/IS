@@ -127,6 +127,8 @@ grosstante(Neffe, Grosstante) :- person(Neffe), frau(Grosstante), person(Elternt
                                  elternteil(Neffe, Elternteil), tante(Elternteil, Grosstante).
 
 :- begin_tests(stammbaum).
+%:- consult(aufgabe).
+%Positive Tests
 
 test(person) :- person(williamWales),
 				person(sarahFergurson).
@@ -161,5 +163,48 @@ test(tante) :- tante(andrewDuke, margaretRose),
 
 test(grosstante) :- grosstante(beatriceYork, margaretRose),
 					grosstante(henryWales, margaretRose).
+					
+%Negative Tests					
+test(person,[fail]) :- person(peter),person(fritz).
+
+test(elternteil,[fail]):- 	elternteil(anneRoyal, antonyArmstrongJones),
+							elternteil(davidLinley, elizabethII).
+							
+test(opa,[fail]) :- opa(williamWales, charlesWales),
+					opa(sarah, antonyArmstrongJones).
+					
+test(oma,[fail]) :- oma(beatriceYork, sarahFergurson),
+					oma(andrewDuke, elizabethII).
+					
+test(vorfahre,[fail]):- vorfahre(henryWales, williamWales),
+						vorfahre(henryWales, beatriceYork),
+						vorfahre(henryWales, eugineYork),
+						vorfahre(henryWales, anneRoyal),
+						vorfahre(henryWales, andrewDuke),
+						vorfahre(henryWales, sarahFergurson),
+						vorfahre(henryWales, edwardWessex),
+						vorfahre(henryWales, davidLinley),
+						vorfahre(henryWales, sarah),
+						vorfahre(henryWales, margaretRose),
+						vorfahre(henryWales, antonyArmstrongJones),
+						vorfahre(henryWales, henryWales).
+						
+test(schwester,[fail]) :- 	schwester(eugineYork, sarahFergurson),
+							schwester(andrewDuke, sarah).
+						
+test(bruder,[fail]) :-	bruder(sarah, edwardWessex),
+						bruder(charlesWales, davidLinley).
+					
+test(onkel,[fail]) :-	onkel(eugineYork, davidLinley),
+						onkel(henryWales, phillipDuke).
+						
+test(tante,[fail]):-	tante(andrewDuke, elizabethBowsLyon),
+						tante(sarah, beatriceYork).
+						
+test(grosstante,[fail]):- 	grosstante(beatriceYork, elizabethII),
+							grosstante(henryWales, elizabethBowsLyon).
+							
+test(grossonkel,[fail]):-	grossonkel(williamWales, phillipDuke),
+							grossonkel(beatriceYork, georgeWindsowVI).
 
 :- end_tests(stammbaum).
