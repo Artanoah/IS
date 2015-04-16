@@ -81,6 +81,16 @@ mutter(sarah, margaretRose).
 mutter(elizabethII, elizabethBowsLyon).
 mutter(margaretRose, elizabethBowsLyon).
 
+% Heiratsbeziehungen
+vh(georgeWindsowVI, elizabethBowsLyon).
+vh(phillipDuke, elizabethII).
+vh(margaretRose, antonyArmstrongJones).
+vh(charlesWales, dianaSpencer).
+vh(andrewDuke, sarahFergurson).
+
+verheiratet(P1, P2) :- vh(P1, P2), !.
+verheiratet(P1, P2) :- vh(P2, P1).
+
 person(Person) :- mann(Person).
 person(Person) :- frau(Person).
 
@@ -126,44 +136,84 @@ grossonkel(Neffe, Grossonkel) :- person(Neffe), mann(Grossonkel), person(Elternt
 grosstante(Neffe, Grosstante) :- person(Neffe), frau(Grosstante), person(Elternteil),
                                  elternteil(Neffe, Elternteil), tante(Elternteil, Grosstante).
 
+schwager(Person, Schwager) :- person(Person), mann(Schwager), person(Geschwisterchen),
+							  geschwister(Person, Geschwisterchen), verheiratet(Geschwisterchen, Schwager).
+schwager(Person, Schwager) :- person(Person), mann(Schwager), person(Geschwisterchen),
+							  verheiratet(Person, Geschwisterchen), geschwister(Geschwisterchen, Schwager).
+							  
+schwaegerin(Person, Schwaegerin) :- person(Person), frau(Schwaegerin), person(Geschwisterchen),
+							  geschwister(Person, Geschwisterchen), verheiratet(Geschwisterchen, Schwaegerin).
+schwaegerin(Person, Schwaegerin) :- person(Person), frau(Schwaegerin), person(Geschwisterchen),
+							  verheiratet(Person, Geschwisterchen), geschwister(Geschwisterchen, Schwaegerin).
+
+schwippschwager(Person, SchwippSchwager) :- person(Person), person(Geschwisterchen), 
+											person(Schwager), mann(SchwippSchwager),
+											geschwister(Person, Geschwisterchen), verheiratet(Geschwisterchen, Schwager),
+											geschwister(Schwager, SchwippSchwager).
+schwippschwager(Person, SchwippSchwager) :- person(Person), person(Ehepartner),
+											person(Schwager), mann(SchwippSchwager),
+											verheiratet(Person, Ehepartner), geschwister(Ehepartner, Schwager),
+											verheiratet(Schwager, SchwippSchwager).
+											
+schwippschwaegerin(Person, SchwippSchwager) :- person(Person), person(Geschwisterchen), 
+											person(Schwager), frau(SchwippSchwager),
+											geschwister(Person, Geschwisterchen), verheiratet(Geschwisterchen, Schwager),
+											geschwister(Schwager, SchwippSchwager).
+schwippschwaegerin(Person, SchwippSchwager) :- person(Person), person(Ehepartner),
+											person(Schwager), frau(SchwippSchwager),
+											verheiratet(Person, Ehepartner), geschwister(Ehepartner, Schwager),
+											verheiratet(Schwager, SchwippSchwager).
+
 :- begin_tests(stammbaum).
 %:- consult(aufgabe).
 %Positive Tests
 
-test(person) :- person(williamWales),
+test(person, [nondet]) :- person(williamWales),
 				person(sarahFergurson).
 
-test(elternteil) :- elternteil(anneRoyal, phillipDuke),
+test(elternteil, [nondet]) :- elternteil(anneRoyal, phillipDuke),
 					elternteil(davidLinley, margaretRose).
 
-test(opa) :- opa(williamWales, phillipDuke),
+test(opa, [nondet]) :- opa(williamWales, phillipDuke),
 			 opa(sarah, georgeWindsowVI).
 
-test(oma) :- oma(beatriceYork, elizabethII),
+test(oma, [nondet]) :- oma(beatriceYork, elizabethII),
 			 oma(andrewDuke, elizabethBowsLyon).
 
-test(vorfahre) :- vorfahre(henryWales, georgeWindsowVI),
+test(vorfahre, [nondet]) :- vorfahre(henryWales, georgeWindsowVI),
 				  vorfahre(henryWales, elizabethBowsLyon),
 				  vorfahre(henryWales, phillipDuke),
 				  vorfahre(henryWales, elizabethII),
 				  vorfahre(henryWales, dianaSpencer),
 				  vorfahre(henryWales, charlesWales).
 
-test(schwester) :- schwester(eugineYork, beatriceYork),
+test(schwester, [nondet]) :- schwester(eugineYork, beatriceYork),
 				   schwester(andrewDuke, anneRoyal).
 
-test(bruder) :- bruder(sarah, davidLinley),
+test(bruder, [nondet]) :- bruder(sarah, davidLinley),
 				bruder(charlesWales, andrewDuke).
 
-test(onkel) :- onkel(eugineYork, edwardWessex),
+test(onkel, [nondet]) :- onkel(eugineYork, edwardWessex),
 			   onkel(henryWales, andrewDuke).
 
-test(tante) :- tante(andrewDuke, margaretRose),
+test(tante, [nondet]) :- tante(andrewDuke, margaretRose),
 			   tante(sarah, elizabethII).
 
-test(grosstante) :- grosstante(beatriceYork, margaretRose),
+test(grosstante, [nondet]) :- grosstante(beatriceYork, margaretRose),
 					grosstante(henryWales, margaretRose).
-					
+
+test(schwager, [nondet]) :- schwager(dianaSpencer, andrewDuke),
+							schwager(dianaSpencer, edwardWessex),
+							schwager(elizabethII, antonyArmstrongJones).
+
+test(schwaegerin, [nondet]) :- schwaegerin(anneRoyal, dianaSpencer),
+							   schwaegerin(anneRoyal, sarahFergurson),
+							   schwaegerin(antonyArmstrongJones, elizabethII).
+
+test(schwippschwager, [nondet]) :- schwippschwager(phillipDuke, antonyArmstrongJones).
+
+test(schwippschwaegerin, [nondet]) :- schwippschwaegerin(dianaSpencer, sarahFergurson).
+
 %Negative Tests					
 test(person,[fail]) :- person(peter),person(fritz).
 
@@ -189,22 +239,33 @@ test(vorfahre,[fail]):- vorfahre(henryWales, williamWales),
 						vorfahre(henryWales, antonyArmstrongJones),
 						vorfahre(henryWales, henryWales).
 						
-test(schwester,[fail]) :- 	schwester(eugineYork, sarahFergurson),
-							schwester(andrewDuke, sarah).
+test(schwester,[fail]) :- 	schwester(eugineYork, sarahFergurson).
+test(schwester,[fail]) :-	schwester(andrewDuke, sarah).
 						
-test(bruder,[fail]) :-	bruder(sarah, edwardWessex),
-						bruder(charlesWales, davidLinley).
+test(bruder,[fail]) :-	bruder(sarah, edwardWessex).
+test(bruder,[fail])	:-	bruder(charlesWales, davidLinley).
 					
-test(onkel,[fail]) :-	onkel(eugineYork, davidLinley),
-						onkel(henryWales, phillipDuke).
+test(onkel,[fail]) :-	onkel(eugineYork, davidLinley).
+test(onkel,[fail]) :-	onkel(henryWales, phillipDuke).
 						
-test(tante,[fail]):-	tante(andrewDuke, elizabethBowsLyon),
-						tante(sarah, beatriceYork).
+test(tante,[fail]):-	tante(andrewDuke, elizabethBowsLyon).
+test(tante,[fail]):-	tante(sarah, beatriceYork).
 						
-test(grosstante,[fail]):- 	grosstante(beatriceYork, elizabethII),
-							grosstante(henryWales, elizabethBowsLyon).
+test(grosstante,[fail]):- 	grosstante(beatriceYork, elizabethII).
+test(grosstante,[fail]):- 	grosstante(henryWales, elizabethBowsLyon).
 							
-test(grossonkel,[fail]):-	grossonkel(williamWales, phillipDuke),
-							grossonkel(beatriceYork, georgeWindsowVI).
+test(grossonkel,[fail]):-	grossonkel(williamWales, phillipDuke).
+test(grossonkel,[fail]):-	grossonkel(beatriceYork, georgeWindsowVI).
 
+test(schwager, [fail]) :- 	schwager(charlesWales, anneRoyal).
+test(schwager, [fail]) :- 	schwager(georgeWindsowVI, elizabethII).
+
+test(schwaegerin, [fail]) :- schwaegerin(sarah, margaretRose).
+test(schwaegerin, [fail]) :- schwaegerin(sarahFergurson, dianaSpencer).
+
+test(schwippschwager, [fail]) :- schwippschwager(henryWales, williamWales).
+test(schwippschwager, [fail]) :- schwippschwager(dianaSpencer, andrewDuke).
+
+test(schwippschwaegerin, [fail]) :- schwippschwaegerin(eugineYork, beatriceYork).
+test(schwippschwaegerin, [fail]) :- schwippschwaegerin(phillipDuke, antonyArmstrongJones).
 :- end_tests(stammbaum).
