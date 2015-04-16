@@ -164,8 +164,8 @@ schwippschwaegerin(Person, SchwippSchwager) :- person(Person), person(Ehepartner
 											verheiratet(Person, Ehepartner), geschwister(Ehepartner, Schwager),
 											verheiratet(Schwager, SchwippSchwager).
 
+% Testfaelle
 :- begin_tests(stammbaum).
-%:- consult(aufgabe).
 %Positive Tests
 
 test(person, [nondet]) :- person(williamWales),
