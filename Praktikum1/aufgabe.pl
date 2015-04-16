@@ -25,8 +25,8 @@
 % vater(maggie, homer).
 % 
 % mutter(homer, mona).
-% mutter(herbert, mona).
-% mutter(marge, jacqueline).
+% elternteil(herbert, mona).
+% elternteil(marge, jacqueline).
 % mutter(patty, jacqueline).
 % mutter(selma, jacqueline).
 % mutter(bart, marge).
@@ -44,6 +44,8 @@ mann(davidLinley).
 mann(williamWales).
 mann(henryWales).
 
+mann(bob).
+
 frau(elizabethBowsLyon).
 frau(elizabethII).
 frau(margaretRose).
@@ -55,31 +57,33 @@ frau(beatriceYork).
 frau(eugineYork).
 
 % Vater- und Mutterschaften [Royal Family]
-vater(williamWales, charlesWales).
-vater(henryWales, charlesWales).
-vater(beatriceYork, andrewDuke).
-vater(eugineYork, andrewDuke).
-vater(charlesWales, phillipDuke).
-vater(anneRoyal, phillipDuke).
-vater(andrewDuke, phillipDuke).
-vater(edwardWessex, phillipDuke).
-vater(davidLinley, antonyArmstrongJones).
-vater(sarah, antonyArmstrongJones).
-vater(elizabethII, georgeWindsowVI).
-vater(margaretRose, georgeWindsowVI).
+elternteil(williamWales, charlesWales).
+elternteil(henryWales, charlesWales).
+elternteil(beatriceYork, andrewDuke).
+elternteil(eugineYork, andrewDuke).
+elternteil(charlesWales, phillipDuke).
+elternteil(anneRoyal, phillipDuke).
+elternteil(andrewDuke, phillipDuke).
+elternteil(edwardWessex, phillipDuke).
+elternteil(davidLinley, antonyArmstrongJones).
+elternteil(sarah, antonyArmstrongJones).
+elternteil(elizabethII, georgeWindsowVI).
+elternteil(margaretRose, georgeWindsowVI).
 
-mutter(williamWales, dianaSpencer).
-mutter(henryWales, dianaSpencer).
-mutter(beatriceYork, sarahFergurson).
-mutter(eugineYork, sarahFergurson).
-mutter(charlesWales, elizabethII).
-mutter(anneRoyal, elizabethII).
-mutter(andrewDuke, elizabethII).
-mutter(edwardWessex, elizabethII).
-mutter(davidLinley, margaretRose).
-mutter(sarah, margaretRose).
-mutter(elizabethII, elizabethBowsLyon).
-mutter(margaretRose, elizabethBowsLyon).
+elternteil(williamWales, dianaSpencer).
+elternteil(henryWales, dianaSpencer).
+elternteil(beatriceYork, sarahFergurson).
+elternteil(eugineYork, sarahFergurson).
+elternteil(charlesWales, elizabethII).
+elternteil(anneRoyal, elizabethII).
+elternteil(andrewDuke, elizabethII).
+elternteil(edwardWessex, elizabethII).
+elternteil(davidLinley, margaretRose).
+elternteil(sarah, margaretRose).
+elternteil(elizabethII, elizabethBowsLyon).
+elternteil(margaretRose, elizabethBowsLyon).
+
+
 
 % Heiratsbeziehungen
 vh(georgeWindsowVI, elizabethBowsLyon).
@@ -94,8 +98,8 @@ verheiratet(P1, P2) :- vh(P2, P1).
 person(Person) :- mann(Person).
 person(Person) :- frau(Person).
 
-elternteil(Kind, Eltern) :- vater(Kind, Eltern).
-elternteil(Kind, Eltern) :- mutter(Kind, Eltern).
+vater(Kind, Eltern) :- elternteil(Kind, Eltern), mann(Eltern).
+mutter(Kind, Eltern) :- elternteil(Kind, Eltern), frau(Eltern).
 
 % Grosseltern
 opa(Neffe, Opa) :- person(Neffe), mann(Opa), person(Elternteil),
@@ -146,21 +150,17 @@ schwaegerin(Person, Schwaegerin) :- person(Person), frau(Schwaegerin), person(Ge
 schwaegerin(Person, Schwaegerin) :- person(Person), frau(Schwaegerin), person(Geschwisterchen),
 							  verheiratet(Person, Geschwisterchen), geschwister(Geschwisterchen, Schwaegerin).
 
-schwippschwager(Person, SchwippSchwager) :- person(Person), person(Geschwisterchen), 
-											person(Schwager), mann(SchwippSchwager),
+schwippschwager(Person, SchwippSchwager) :- person(Person), mann(SchwippSchwager),
 											geschwister(Person, Geschwisterchen), verheiratet(Geschwisterchen, Schwager),
 											geschwister(Schwager, SchwippSchwager).
-schwippschwager(Person, SchwippSchwager) :- person(Person), person(Ehepartner),
-											person(Schwager), mann(SchwippSchwager),
+schwippschwager(Person, SchwippSchwager) :- person(Person), mann(SchwippSchwager),
 											verheiratet(Person, Ehepartner), geschwister(Ehepartner, Schwager),
 											verheiratet(Schwager, SchwippSchwager).
 											
-schwippschwaegerin(Person, SchwippSchwager) :- person(Person), person(Geschwisterchen), 
-											person(Schwager), frau(SchwippSchwager),
+schwippschwaegerin(Person, SchwippSchwager) :- person(Person), frau(SchwippSchwager),
 											geschwister(Person, Geschwisterchen), verheiratet(Geschwisterchen, Schwager),
 											geschwister(Schwager, SchwippSchwager).
-schwippschwaegerin(Person, SchwippSchwager) :- person(Person), person(Ehepartner),
-											person(Schwager), frau(SchwippSchwager),
+schwippschwaegerin(Person, SchwippSchwager) :- person(Person), frau(SchwippSchwager),
 											verheiratet(Person, Ehepartner), geschwister(Ehepartner, Schwager),
 											verheiratet(Schwager, SchwippSchwager).
 
