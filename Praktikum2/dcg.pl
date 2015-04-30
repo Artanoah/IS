@@ -6,12 +6,14 @@
 %###lex###
 
 % Grammatik-Regeln
-s(s(I, VP, PP))      --> i(I, AGR1), vp(VP, AGR1), pp(PP, AGR2).
-s(s(V, E, NP, PP))   --> v(V, AGR1), e(E, AGR1), np(NP, AGR1), pp(PP, AGR2).
-vp(vp(V, NP), AGR)   --> v(V, AGR), np(NP, AGR).
-np(np(A, N), AGR)    --> a(A, AGR), n(N, AGR).
-np(np(N), AGR)       --> n(N, AGR).
-pp(pp(P, E), AGR)    --> p(P, AGR), e(E, AGR).
+s(SemS, s(I, VP, PP))      --> i(_, I, AGR1), vp(SemVP, VP, AGR1), pp(SemPP, PP, _),
+                               {SemS =.. [SemVP, SemPP, _]}.
+s(SemS, s(V, E, NP, PP))   --> v(_, V, AGR1), e(SemE, E, AGR1), np(SemNP, NP, AGR1), pp(SemPP, PP, _),
+                               {SemS =.. [SemNP, SemPP, SemE]}.
+vp(SemVP, vp(V, NP), AGR)   --> v(_, V, AGR), np(SemVP, NP, AGR).
+np(SemNP, np(A, N), AGR)    --> a(_, A, AGR), n(SemNP, N, AGR).
+np(SemNP, np(N), AGR)       --> n(SemNP, N, AGR).
+pp(SemPP, pp(P, E), AGR)    --> p(_, P, AGR), e(SemPP, E, AGR).
 
 
 % Testfaelle
@@ -22,7 +24,7 @@ test(person, [nondet]) :- person(williamWales),
                           person(sarahFergurson).
 
 test(elternteil, [nondet]) :- elternteil(anneRoyal, phillipDuke),
-							elternteil(davidLinley, margaretRose).
+                                                        elternteil(davidLinley, margaretRose).
 
 test(opa, [nondet]) :- opa(williamWales, phillipDuke),
                        opa(sarah, georgeWindsowVI).
@@ -38,7 +40,7 @@ test(vorfahre, [nondet]) :- vorfahre(henryWales, georgeWindsowVI),
                             vorfahre(henryWales, charlesWales).
 
 test(schwester, [nondet]) :- schwester(eugineYork, beatriceYork),
-							 schwester(andrewDuke, anneRoyal).
+                                                         schwester(andrewDuke, anneRoyal).
 
 test(bruder, [nondet]) :- bruder(sarah, davidLinley),
                           bruder(charlesWales, andrewDuke).
@@ -121,6 +123,9 @@ test(schwippschwaegerin, [fail]) :- schwippschwaegerin(phillipDuke, antonyArmstr
 :- end_tests(stammbaum).
 
 :- begin_tests(grammatik).
-test(s,[nondet]) :- s(S,[ist,margaretRose,die,tante,von,andrewDuke],[]).
+test(s,[nondet]) :- s(Sem, _, [ist,margaretRose,die,tante,von,andrewDuke],[]), Sem.
+test(s,[nondet]) :- s(Sem, _, [wer, ist, der, vater, von, henryWales],[]), Sem.
+test(s,[nondet]) :- s(Sem, _, [ist, charlesWales, der, vater, von, henryWales],[]), Sem.
+test(s,[fail])   :- s(Sem, _, [ist, henryWales, der, vater, von, charlesWales],[]), Sem.
 
 :- end_tests(grammatik).

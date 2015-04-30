@@ -2,7 +2,7 @@
 % agr(Numerus, Person, Geschlecht)
 % Eigennamen
 
-e(e(GE), AGR) --> [E], {lex(E, GE, e, AGR)}.
+e(GE, e(GE), AGR) --> [E], {lex(E, GE, e, AGR)}.
 lex(georgeWindsowVI, georgeWindsowVI, e, agr(sg, 3, m)).
 lex(phillipDuke, phillipDuke, e, agr(sg, 3, m)).
 lex(antonyArmstrongJones, antonyArmstrongJones, e, agr(sg, 3, m)).
@@ -23,7 +23,7 @@ lex(beatriceYork, beatriceYork, e, agr(sg, 3, f)).
 lex(eugineYork, eugineYork, e, agr(sg, 3, f)).
 
 % Nomen
-n(n(GN), AGR) --> [N], {lex(N, GN, n, AGR)}.
+n(GN, n(GN), AGR) --> [N], {lex(N, GN, n, AGR)}.
 lex(vater, vater, n, agr(sg, 3, m)).
 lex(mutter, mutter, n, agr(sg, 3, f)).
 lex(onkel, onkel, n, agr(sg, 3, m)).
@@ -48,7 +48,7 @@ lex(schwippsschwaegerin, schwippsschwaegerin, n, agr(sg, 3, f)).
 lex(schwippsschwaegerinnen, schwippsschwaegerin, n, agr(pl, _, f)).
 
 % Verben
-v(v(GV), AGR) --> [V], {lex(V, GV, v, AGR)}.
+v(GV, v(GV), AGR) --> [V], {lex(V, GV, v, AGR)}.
 lex(bin, sein, v, agr(sg, 1, _)).
 lex(bist, sein, v, agr(sg, 2, _)).
 lex(ist, sein, v, agr(sg, 3, _)).
@@ -57,15 +57,15 @@ lex(seid, sein, v, agr(pl, 2, _)).
 lex(sind, sein, v, agr(pl, 3, _)).
 
 % Artikel
-a(a(GA), AGR) --> [A], {lex(A, GA, a, AGR)}.
+a(GA, a(GA), AGR) --> [A], {lex(A, GA, a, AGR)}.
 lex(der, der, a, agr(sg, _, m)).
 lex(die, die, a, agr(pl, _, _)).
 lex(die, die, a, agr(sg, _, f)).
 
 % Präposition
-p(p(GP), AGR) --> [P], {lex(P, GP, p, AGR)}.
+p(GP, p(GP), AGR) --> [P], {lex(P, GP, p, AGR)}.
 lex(von, von, p, agr(_, _, _)).
 
 % Interrogativpronomen
-i(i(GI), AGR) --> [I], {lex(I, GI, i, AGR)}.
+i(GI, i(GI), AGR) --> [I], {lex(I, GI, i, AGR)}.
 lex(wer, wer, i, agr(_, 3, _)).
