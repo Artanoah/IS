@@ -15,6 +15,9 @@ np(SemNP, np(A, N), AGR)    --> a(_, A, AGR), n(SemNP, N, AGR).
 np(SemNP, np(N), AGR)       --> n(SemNP, N, AGR).
 pp(SemPP, pp(P, E), AGR)    --> p(_, P, AGR), e(SemPP, E, AGR).
 
+a(Semantik, Struktur)      --> {Semantik =.. [SemVP, SemPP, SemE]},
+                               e(SemE, E, AGR1), vp(SemVP, VP, AGR1), p(_, P, _), e(SemPP, E2, AGR2).
+
 
 % Testfaelle
 :- begin_tests(stammbaum).
@@ -123,7 +126,7 @@ test(schwippschwaegerin, [fail]) :- schwippschwaegerin(phillipDuke, antonyArmstr
 :- end_tests(stammbaum).
 
 :- begin_tests(grammatik).
-test(s,[fail]) :- s(Sem, _, [ist,margaretRose,die,tante,von,andrewDuke],[]), Sem.
+test(s,[nondet]) :- s(Sem, _, [ist,margaretRose,die,tante,von,andrewDuke],[]), Sem.
 test(s,[nondet]) :- s(Sem, _, [wer, ist, der, vater, von, henryWales],[]), Sem.
 test(s,[nondet]) :- s(Sem, _, [ist, charlesWales, der, vater, von, henryWales],[]), Sem.
 test(s,[fail])   :- s(Sem, _, [ist, henryWales, der, vater, von, charlesWales],[]), Sem.

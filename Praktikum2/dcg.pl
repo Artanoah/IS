@@ -1,5 +1,4 @@
 % ########## Wissensbasis und Funktionen aus Aufgabe 1 Beginn ##########
-:-include(stammbaum).
 :-include(lex).
 
 %####stammbaum####
@@ -14,6 +13,9 @@ vp(SemVP, vp(V, NP), AGR)   --> v(_, V, AGR), np(SemVP, NP, AGR).
 np(SemNP, np(A, N), AGR)    --> a(_, A, AGR), n(SemNP, N, AGR).
 np(SemNP, np(N), AGR)       --> n(SemNP, N, AGR).
 pp(SemPP, pp(P, E), AGR)    --> p(_, P, AGR), e(SemPP, E, AGR).
+
+a(Semantik, Struktur)      --> {Semantik =.. [SemVP, SemPP, SemE]},
+                               e(SemE, E, AGR1), vp(SemVP, VP, AGR1), p(_, P, _), e(SemPP, E2, AGR2).
 
 
 % Testfaelle

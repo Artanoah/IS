@@ -1,26 +1,11 @@
 % ########## Aufgabe 2 ##########
 % agr(Numerus, Person, Geschlecht)
 % Eigennamen
+:-consult(stammbaum).
 
 e(GE, e(GE), AGR) --> [E], {lex(E, GE, e, AGR)}.
-lex(georgeWindsowVI, georgeWindsowVI, e, agr(sg, 3, m)).
-lex(phillipDuke, phillipDuke, e, agr(sg, 3, m)).
-lex(antonyArmstrongJones, antonyArmstrongJones, e, agr(sg, 3, m)).
-lex(charlesWales, charlesWales, e, agr(sg, 3, m)).
-lex(andrewDuke, andrewDuke, e, agr(sg, 3, m)).
-lex(edwardWessex, edwardWessex, e, agr(sg, 3, m)).
-lex(davidLinley, davidLinley, e, agr(sg, 3, m)).
-lex(williamWales, williamWales, e, agr(sg, 3, m)).
-lex(henryWales, henryWales, e, agr(sg, 3, m)).
-lex(elizabethBowsLyon, elizabethBowsLyon, e, agr(sg, 3, f)).
-lex(elizabethII, elizabethII, e, agr(sg, 3, f)).
-lex(margaretRose, margaretRose, e, agr(sg, 3, f)).
-lex(dianaSpencer, dianaSpencer, e, agr(sg, 3, f)).
-lex(anneRoyal, anneRoyal, e, agr(sg, 3, f)).
-lex(sarahFergurson, sarahFergurson, e, agr(sg, 3, f)).
-lex(sarah, sarah, e, agr(sg, 3, f)).
-lex(beatriceYork, beatriceYork, e, agr(sg, 3, f)).
-lex(eugineYork, eugineYork, e, agr(sg, 3, f)).
+lex(E, E, e, agr(sg, 3, m)) :- mann(E).
+lex(E, E, e, agr(sg, 3, f)) :- frau(E).
 
 % Nomen
 n(GN, n(GN), AGR) --> [N], {lex(N, GN, n, AGR)}.
@@ -61,6 +46,8 @@ a(GA, a(GA), AGR) --> [A], {lex(A, GA, a, AGR)}.
 lex(der, der, a, agr(sg, _, m)).
 lex(die, die, a, agr(pl, _, _)).
 lex(die, die, a, agr(sg, _, f)).
+lex(ein, ein, a, agr(sg, _, m)).
+lex(eine, ein, a, agr(sg, _, f)).
 
 % Präposition
 p(GP, p(GP), AGR) --> [P], {lex(P, GP, p, AGR)}.
