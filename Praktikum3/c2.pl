@@ -1,6 +1,6 @@
 :- use_module(library(clpfd)).
 
-solve :- time(findall(_,solve_me,_)).
+solve :- time(solve_me).
 
 solve_me :-
     T = [Red, Green, Ivory, Blue, Yellow],
@@ -41,6 +41,7 @@ solve_me :-
 	
 	transpose([Tints, Nationalities, Pets, Drinks, Cigaretts], Result),
 	writeresults(Result).
+
 	
 sort_elements(Keys, Values, Result) :-
     pairs_keys_values(Tupel, Keys, Values),

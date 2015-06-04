@@ -42,30 +42,30 @@ generate([[T1,N1,P1,D1,C1],
 	maplist(drink, [D1,D2,D3,D4,D5]),
 	maplist(cigarettes, [C1,C2,C3,C4,C5]),
 	
-	C1 \== C2, C1 \== C3, C1 \== C4, C1 \== C5,
-	C2 \== C3, C2 \== C4, C2 \== C5,
-	C3 \== C4, C3 \== C5,
-	C4 \== C5,
+	C1 \= C2, C1 \= C3, C1 \= C4, C1 \= C5,
+	C2 \= C3, C2 \= C4, C2 \= C5,
+	C3 \= C4, C3 \= C5,
+	C4 \= C5,
 	
-	D1 \== D2, D1 \== D3, D1 \== D4, D1 \== D5,
-	D2 \== D3, D2 \== D4, D2 \== D5,
-	D3 \== D4, D3 \== D5,
-	D4 \== D5,
+	D1 \= D2, D1 \= D3, D1 \= D4, D1 \= D5,
+	D2 \= D3, D2 \= D4, D2 \= D5,
+	D3 \= D4, D3 \= D5,
+	D4 \= D5,
 	
-	P1 \== P2, P1 \== P3, P1 \== P4, P1 \== P5,
-	P2 \== P3, P2 \== P4, P2 \== P5,
-	P3 \== P4, P3 \== P5,
-	P4 \== P5,
+	P1 \= P2, P1 \= P3, P1 \= P4, P1 \= P5,
+	P2 \= P3, P2 \= P4, P2 \= P5,
+	P3 \= P4, P3 \= P5,
+	P4 \= P5,
 	
-	N1 \== N2, N1 \== N3, N1 \== N4, N1 \== N5,
-	N2 \== N3, N2 \== N4, N2 \== N5,
-	N3 \== N4, N3 \== N5,
-	N4 \== N5,
+	N1 \= N2, N1 \= N3, N1 \= N4, N1 \= N5,
+	N2 \= N3, N2 \= N4, N2 \= N5,
+	N3 \= N4, N3 \= N5,
+	N4 \= N5,
 	
-	T1 \== T2, T1 \== T3, T1 \== T4, T1 \== T5,
-	T2 \== T3, T2 \== T4, T2 \== T5,
-	T3 \== T4, T3 \== T5,
-	T4 \== T5.
+	T1 \= T2, T1 \= T3, T1 \= T4, T1 \= T5,
+	T2 \= T3, T2 \= T4, T2 \= T5,
+	T3 \= T4, T3 \= T5,
+	T4 \= T5.
 	
 test(Lists) :-
     member([red,english,_,_,_], Lists),
@@ -84,7 +84,7 @@ test(Lists) :-
 	nextTo([_,norwegian,_,_,_],[blue,_,_,_,_],List).
 	
 left(L1,L2,[L1,L2|_]).
-left(L1,L2,[_|R] :- left(L1,L2,R).
+left(L1,L2,[_|R]) :- left(L1,L2,R).
 
 middle(L,[_,_,L,_,_]).
 
