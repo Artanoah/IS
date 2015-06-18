@@ -13,13 +13,11 @@ import java.util.List;
 
 public class Game {
 
-	int size;
 	List<Player> players;
 	Binding binding;
 	Iterator<Player> playerIterator;
 
 	public Game(int size, Player... players) {
-		this.size = size;
 		this.binding = new Binding(size);
 		this.players = new ArrayList<Player>(Arrays.asList(players));
 		this.playerIterator = this.players.iterator();
@@ -36,8 +34,10 @@ public class Game {
 	 * the game has been finished.
 	 * 
 	 * @return <code>int</code>
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public int makeTurn() {
+	public int makeTurn() throws ClassNotFoundException, IOException {
 		Player nextPlayer = getNextPlayer();
 
 		int[] choice = nextPlayer.makeTurn();
@@ -45,12 +45,12 @@ public class Game {
 		int yCoord = choice[1];
 
 		// Existiert das gewaehlte Feld?
-		if (binding.getBinding(xCoord, yCoord) == null) {
+		if (binding.getBinding(xCoord, yCoord) == -1) {
 			throw new IllegalArgumentException("Choose a not existing field");
 		}
 
 		// Ist das existierende Feld verfuegbar?
-		if (!binding.getBinding(xCoord, yCoord).equals(0)) {
+		if (!(binding.getBinding(xCoord, yCoord) == 0)) {
 			throw new IllegalArgumentException("Choose already binded field");
 		}
 
@@ -74,6 +74,17 @@ public class Game {
 			return getNextPlayer();
 		}
 	}
+	
+	public Player getPlayerAfter(Player player) {
+		int playerIndex = players.indexOf(player);
+		if(playerIndex < 0) {
+			throw new IllegalArgumentException("Player " + player.getID() + " not in this game");
+		} else if(playerIndex == (players.size() - 1)) {
+			return players.get(0);
+		} else {
+			return players.get(playerIndex + 1);
+		}
+	}
 
 	/**
 	 * Creates a deep copy of the binding in this game
@@ -83,16 +94,7 @@ public class Game {
 	 * @throws ClassNotFoundException
 	 */
 	public Binding getBindingCopy() throws IOException, ClassNotFoundException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ObjectOutputStream oos = new ObjectOutputStream(baos);
-		oos.writeObject(binding);
-		oos.close();
-		String obj = Base64.getEncoder().encodeToString(baos.toByteArray());
-		byte[] data = Base64.getDecoder().decode(obj);
-		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
-		Object o = ois.readObject();
-		ois.close();
-		return (Binding) o;
+		return binding.getDeepCopy();
 	}
 	
 	public void print() {
