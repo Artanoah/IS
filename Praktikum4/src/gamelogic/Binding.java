@@ -173,17 +173,27 @@ public class Binding implements Serializable {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public Binding getDeepCopy() throws IOException, ClassNotFoundException {
+	public Binding getDeepCopy() {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ObjectOutputStream oos = new ObjectOutputStream(baos);
-		oos.writeObject(this);
-		oos.close();
-		String obj = Base64.getEncoder().encodeToString(baos.toByteArray());
-		byte[] data = Base64.getDecoder().decode(obj);
-		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(
-				data));
-		Object o = ois.readObject();
-		ois.close();
+		ObjectOutputStream oos;
+		Object o = null;
+		try {
+			oos = new ObjectOutputStream(baos);
+			oos.writeObject(this);
+			oos.close();
+			String obj = Base64.getEncoder().encodeToString(baos.toByteArray());
+			byte[] data = Base64.getDecoder().decode(obj);
+			ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(
+					data));
+			o = ois.readObject();
+			ois.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return (Binding) o;
 	}
 
@@ -245,7 +255,7 @@ public class Binding implements Serializable {
 		} else if(winner > 0) {
 			return -100;
 		} else if(isDraw()) {
-			return -10;
+			return 0;
 		} else {
 			int thisAkku = this.getNumberOfWinPossibilities(playerID);
 			

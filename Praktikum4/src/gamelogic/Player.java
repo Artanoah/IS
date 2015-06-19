@@ -6,6 +6,7 @@ public abstract class Player {
 	private static Generator gen = new Generator(1);
 	protected static Game board;
 	protected final int id;
+	protected static final int MAX_DEPTH = 4;
 
 	/**
 	 * @return List&lt;Integer&gt; List, whichs first index (0) is the
