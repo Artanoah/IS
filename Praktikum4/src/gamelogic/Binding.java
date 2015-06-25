@@ -151,8 +151,22 @@ public class Binding implements Serializable {
 
 	public void print() {
 		String akku = "##### GAME #####\n";
+		akku += "  | ";
+		
+		for(int i = 0; i < size; i++) {
+			akku += i + " ";
+		}
+		
+		akku += "\n";
+		
+		for(int i = 0; i < 4 + 2*size; i++) {
+			akku += "-";
+		}
+		
+		akku += "\n";
 
 		for (int y = 0; y < size; y++) {
+			akku += y + " |";
 			for (int x = 0; x < size; x++) {
 				akku += " " + getBinding(x, y);
 			}
@@ -251,23 +265,33 @@ public class Binding implements Serializable {
 		int playerID = player.getID();
 		
 		if(winner == playerID) {
-			return 100;
+			return 1000000;
 		} else if(winner > 0) {
-			return -100;
+			return -1000000;
 		} else if(isDraw()) {
 			return 0;
 		} else {
-			int thisAkku = this.getNumberOfWinPossibilities(playerID);
+			int thisWinPossibilityAkku = this.getNumberOfWinPossibilities(playerID);
 			
 			for(int tempPlayerID : this.binding.values()) {
 				if(tempPlayerID == playerID || tempPlayerID == 0) {
 					continue;
 				} else {
-					thisAkku -= this.getNumberOfWinPossibilities(tempPlayerID);
+					thisWinPossibilityAkku -= this.getNumberOfWinPossibilities(tempPlayerID);
 				}
 			}
 			
-			return thisAkku;
+			int thisMissingPiecesToWinAkku = -1 * this.getMissingPiecesToWin(playerID);
+			
+			for(int tempPlayerID : this.binding.values()) {
+				if(tempPlayerID == 0 && tempPlayerID == playerID) {
+					continue;
+				} else {
+					thisMissingPiecesToWinAkku += this.getMissingPiecesToWin(tempPlayerID);
+				}
+			}
+			
+			return thisWinPossibilityAkku * size + thisMissingPiecesToWinAkku;
 		}
 	}
 
@@ -279,6 +303,33 @@ public class Binding implements Serializable {
 						element -> element == playerID
 								|| element == 0) ? 1 : 0)
 				.reduce(0, (a, b) -> a + b);
+	}
+	
+	private int getMissingPiecesToWin(int playerID) {
+		List<List<Integer>> lines = winningLines;
+		
+		int best = 100;
+		
+		outer:
+		for(List<Integer> line : lines) {
+			int akku = 0;
+			
+			for(Integer element : line) {
+				if(element != 0  && element != playerID) {
+					continue outer;
+				} else if (element == playerID) {
+					continue;
+				} else {
+					akku += 1;
+				}
+			}
+			
+			if(akku < best) {
+				best = akku;
+			}
+		}
+		
+		return best;
 	}
 	
 	public boolean isFieldEmpty(int xCoord, int yCoord) {

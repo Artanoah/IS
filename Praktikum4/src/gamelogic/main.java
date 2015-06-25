@@ -4,11 +4,11 @@ import java.io.IOException;
 
 public class main {
 	
-	private static final int SIZE = 4;
+	private static final int SIZE = 6;
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
-		Player p1 = new AIPlayer();
-		Player p2 = new AIPlayer();
+		Player p1 = new AIPlayerMultithreaded();
+		Player p2 = new AIPlayerMultithreaded();
 		Game game = new Game(SIZE, p1, p2);
 		int winner = 0;
 		
@@ -25,5 +25,4 @@ public class main {
 		System.out.println("Player " + winner + " wins");
 		System.out.println("Calculation-Time: " + (endTime - startTime));
 	}
-
 }
